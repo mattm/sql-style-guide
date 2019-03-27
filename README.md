@@ -57,13 +57,13 @@ select * from final
 ## Use lowercase SQL
 
 ```sql
-# Good
+-- Good
 select * from users
 
-# Bad
+-- Bad
 SELECT * FROM users
 
-# Bad
+-- Bad
 Select * From users
 ```
 
@@ -75,30 +75,30 @@ The only time to put all of your SQL on one line is when you're selecting:
 * _And_ there's no additional complexity in your query
 
 ```sql
-# Good
+-- Good
 select * from users
 
-# Good
+-- Good
 select id from users
 
-# Good
+-- Good
 select id, email from users
 
-# Good
+-- Good
 select count(*) from users
 ```
 
 For everything else, break it into multiple lines:
 
 ```sql
-# Good
+-- Good
 select
     id,
     email,
     created_at
 from users
 
-# Good
+-- Good
 select *
 from users
 where email = "example@domain.com"
@@ -107,28 +107,28 @@ where email = "example@domain.com"
 For queries that have 1 or 2 columns, you can place the columns on the same line. For 3+ columns, place each column name on its own line, including the first item:
 
 ```sql
-# Good
+-- Good
 select id, email
 from users
 where email like "%@gmail.com"
 
-# Good
+-- Good
 select user_id, count(*) as total_charges
 from charges
 group by user_id
 
-# Good
+-- Good
 select
     id,
     email,
     created_at
 from users
 
-# Bad
+-- Bad
 select id, email, created_at
 from users
 
-# Bad
+-- Bad
 select id,
     email
 from users
@@ -137,12 +137,12 @@ from users
 ##    Left align everything
 
 ```sql
-# Good
+-- Good
 select id, email
 from users
 where email like "%@gmail.com"
 
-# Bad
+-- Bad
 select id, email
     from users
  where email like "%@gmail.com"
@@ -153,12 +153,12 @@ select id, email
 Avoid single quotes unless your SQL dialect requires them:
 
 ```sql
-## Good
+#-- Good
 select *
 from users
 where email = "example@domain.com"
 
-# Bad
+-- Bad
 select *
 from users
 where email = 'example@domain.com'
@@ -167,21 +167,21 @@ where email = 'example@domain.com'
 ## Column names should be snake_case
 
 ```sql
-# Good
+-- Good
 select
     id,
     email,
     timestamp_trunc(created_at, month) as signup_month
 from users
 
-# Bad: No alias
+-- Bad: No alias
 select
     id,
     email,
     timestamp_trunc(created_at, month)
 from users
 
-# Bad: Other casing
+-- Bad: Other casing
 select
     id,
     email,
@@ -212,14 +212,14 @@ where
 ## Use `as` to alias column names
 
 ```sql
-# Good
+-- Good
 select
     id,
     email,
     timestamp_trunc(created_at, month) as signup_month
 from users
 
-# Bad: Omitting `as`
+-- Bad: Omitting `as`
 select
     id,
     email,
@@ -230,12 +230,12 @@ from users
 ## Group by column name, not number
 
 ```sql
-# Good
+-- Good
 select user_id, count(*) as total_charges
 from charges
 group by user_id
 
-# Bad
+-- Bad
 select
     user_id,
     count(*) as total_charges
@@ -246,13 +246,13 @@ group by 1
 ## Commas should be at the the end of lines
 
 ```sql
-# Good
+-- Good
 select
     id,
     email
 from users
 
-# Bad
+-- Bad
 select
     id
     , email
@@ -262,12 +262,12 @@ from users
 ## Avoid spaces inside of parenthesis
 
 ```sql
-# Good
+-- Good
 select *
 from users
 where id in (1, 2)
 
-# Bad
+-- Bad
 select *
 from users
 where id in ( 1, 2 )
@@ -278,7 +278,7 @@ where id in ( 1, 2 )
 Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` part should be on its own line, indented one level deeper than `when`.
 
 ```sql
-# Good
+-- Good
 select
     case
         when event_name = "viewed_homepage"
@@ -288,7 +288,7 @@ select
     end as page_name
 from events
 
-# Bad 
+-- Bad 
 select
     case when event_name = "viewed_homepage" then "Homepage"
         when event_name = "viewed_editor" then "Editor"
@@ -307,7 +307,7 @@ If you use any CTEs, always have a CTE named `final` and `select * from final` a
 Closing CTE parentheses should use the same indentation level as `with` and the CTE names.
 
 ```sql
-# Good
+-- Good
 with ordered_details as (
 
     select
@@ -332,24 +332,24 @@ select * from final
 ## Use meaningful CTE names
 
 ```sql
-# Good
+-- Good
 with ordered_details as (
 
-# Bad
+-- Bad
 with d1 as (
 ```
 
 ## Omit `inner` from joins
 
 ```sql
-# Good
+-- Good
 select
     email,
     sum(amount) as total_revenue
 from users
 join charges on charges.user_id = users.id
 
-# Bad
+-- Bad
 select
     email,
     sum(amount) as total_revenue
@@ -360,14 +360,14 @@ inner join charges on charges.user_id = users.id
 ## For join conditions, put the joined table column first
 
 ```sql
-# Good
+-- Good
 select
     email,
     sum(amount) as total_revenue
 from users
 join charges on charges.user_id = users.id
 
-# Bad
+-- Bad
 select
     email,
     sum(amount) as total_revenue
@@ -378,14 +378,14 @@ join charges on users.id = charges.user_id
 ## Join conditions should be on the same line as the join
 
 ```sql
-# Good
+-- Good
 select
     email,
     sum(amount) as total_revenue
 from users
 join charges on charges.user_id = users.id
 
-# Bad
+-- Bad
 select
     email,
     sum(amount) as total_revenue
@@ -398,14 +398,14 @@ on charges.user_id = users.id
 ## Avoid aliasing tables
 
 ```sql
-# Good
+-- Good
 select
     email,
     sum(amount) as total_revenue
 from users
 join charges on charges.user_id = users.id
 
-# Bad
+-- Bad
 select
     email,
     sum(amount) as total_revenue
@@ -420,14 +420,14 @@ The only exception is when you need to join onto a table more than once and need
 You can leave it all on its own line or break it up into multiple depending on its length:
 
 ```sql
-# Good
+-- Good
 select
     user_id,
     name,
     row_number() over (partition by user_id order by date_updated desc) as details_rank
 from billingdaddy.billing_stored_details
 
-# Good
+-- Good
 select
     user_id,
     name,
