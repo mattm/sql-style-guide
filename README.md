@@ -356,25 +356,25 @@ with ordered_details as (
 with d1 as (
 ```
 
-### Omit `inner` from joins
+### Include `inner` for inner joins
 
 ```sql
 -- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-join charges on charges.user_id = users.id
-
--- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
 inner join charges on charges.user_id = users.id
+
+-- Bad
+select
+    email,
+    sum(amount) as total_revenue
+from users
+join charges on charges.user_id = users.id
 ```
 
-### For join conditions, put the joined table column first
+### For join conditions, put the joined table column second
 
 ```sql
 -- Good
@@ -382,14 +382,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+join charges on charges.user_id = users.id
 ```
 
 ### Join conditions should be on the same line as the join
