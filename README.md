@@ -356,7 +356,7 @@ with ordered_details as (
 with d1 as (
 ```
 
-### Include `inner` for inner joins
+### Omit `inner` for inner joins
 
 ```sql
 -- Good
@@ -364,14 +364,15 @@ select
     email,
     sum(amount) as total_revenue
 from users
-inner join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+inner join charges on charges.user_id = users.id
+
 ```
 
 ### For join conditions, put the joined table column second
