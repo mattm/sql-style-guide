@@ -146,7 +146,7 @@ where email like "%@gmail.com"
 
 -- Bad
 select id, email
-    from users
+  from users
  where email like "%@gmail.com"
 ```
 
