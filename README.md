@@ -470,3 +470,13 @@ select
     ) as details_rank
 from billingdaddy.billing_stored_details
 ```
+
+## Credits
+
+This style guide was inspired in part by:
+
+* [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide)
+* [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
+* [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
+
+Hat-tip to Peter Butler and Dan Wyman for providing feedback on this guide.
