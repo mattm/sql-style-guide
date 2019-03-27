@@ -57,7 +57,7 @@ from users
 where email = "example@domain.com"
 ```
 
-For results with 1 or 2 columns, place the columns on the same line. For 3+, place each item on its own line, including the first item:
+For queries that have 1 or 2 columns, you can place the columns on the same line. For 3+ columns, place each column name on its own line, including the first item:
 
 ```
 # Good
