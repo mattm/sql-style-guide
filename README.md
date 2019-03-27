@@ -191,6 +191,28 @@ select
 from users
 ```
 
+### Always rename aggregates and function-wrapped arguments
+
+```sql
+-- Good
+select count(*) as total_users
+from users
+
+-- Bad
+select count(*)
+from users
+
+-- Good
+select timestamp_millis(property_beacon_interest) as expressed_interest_at
+from hubspot.contact
+where property_beacon_interest is not null
+
+-- Bad
+select timestamp_millis(property_beacon_interest)
+from hubspot.contact
+where property_beacon_interest is not null
+```
+
 ### Indenting where conditions
 
 When there's only one where condition, leave it on the same line as `where`:
