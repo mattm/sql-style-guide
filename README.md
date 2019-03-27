@@ -176,14 +176,7 @@ select
     timestamp_trunc(created_at, month) as signup_month
 from users
 
--- Bad: No alias
-select
-    id,
-    email,
-    timestamp_trunc(created_at, month)
-from users
-
--- Bad: Other casing
+-- Bad
 select
     id,
     email,
