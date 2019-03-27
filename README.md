@@ -5,6 +5,53 @@ Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a professional data anal
 
 Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
+## Complete example
+
+Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
+
+```
+with hubspot_interest as (
+
+    select
+        email,
+        timestamp_millis(property_beacon_interest) as expressed_interest_at
+    from hubspot.contact
+    where property_beacon_interest is not null
+
+), 
+
+support_interest as (
+
+    select 
+        email,
+        created_at as expressed_interest_at
+    from helpscout.conversation
+    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
+    where tag = "beacon-interest"
+
+), 
+
+combined_interest as (
+
+    select * from hubspot_interest
+    union all
+    select * from support_interest
+
+),
+
+final as (
+
+    select 
+        email,
+        min(expressed_interest_at) as expressed_interest_at
+    from combined_interest
+    group by 1
+
+)
+
+select * from final
+```
+
 ## Use 4 spaces to indent, not tabs
 
 ## Use lowercase SQL
