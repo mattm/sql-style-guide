@@ -69,7 +69,7 @@ SELECT * FROM users
 Select * From users
 ```
 
-### Use multiple lines
+### Single line vs multiple line queries
 
 The only time to put all of your SQL on one line is when you're selecting:
 
