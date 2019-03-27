@@ -26,7 +26,7 @@ support_interest as (
         email,
         created_at as expressed_interest_at
     from helpscout.conversation
-    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
+    join helpscout.conversation_tag on conversation_tag.conversation_id = conversation.id
     where tag = "beacon-interest"
 
 ), 
@@ -45,7 +45,7 @@ final as (
         email,
         min(expressed_interest_at) as expressed_interest_at
     from combined_interest
-    group by 1
+    group by email
 
 )
 
