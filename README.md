@@ -290,6 +290,20 @@ from users
 where id in ( 1, 2 )
 ```
 
+### Break long lists of `in` values into multiple indented lines
+
+```sql
+-- Good
+select *
+from users
+where email in (
+    "user-1@example.com",
+    "user-2@example.com",
+    "user-3@example.com",
+    "user-4@example.com"    
+)
+```
+
 ### Aligning case/when statements
 
 Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` part should be on its own line, indented one level deeper than `when`.
