@@ -26,7 +26,7 @@ support_interest as (
         email,
         created_at as expressed_interest_at
     from helpscout.conversation
-    join helpscout.conversation_tag on conversation_tag.conversation_id = conversation.id
+    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where tag = "beacon-interest"
 
 ), 
@@ -371,7 +371,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 ```
 
 ### For join conditions, put the joined table column second
@@ -400,7 +400,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
@@ -408,7 +408,7 @@ select
     sum(amount) as total_revenue
 from users
 join charges
-on charges.user_id = users.id
+on users.id = charges.user_id
 ```
 
 For multiple join conditions, lean towards putting them on the same line, but if the line becomes too long it's fine to move the conditions to new lines.
@@ -421,14 +421,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users u
-join charges c on c.user_id = u.id
+join charges c on u.id = c.user_id
 ```
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
