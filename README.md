@@ -5,7 +5,7 @@ Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a professional data anal
 
 Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
-## Complete example
+## Example
 
 Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
 
@@ -52,9 +52,11 @@ final as (
 select * from final
 ```
 
-## Use 4 spaces to indent, not tabs
+## Guidelines
 
-## Use lowercase SQL
+### Use 4 spaces to indent, not tabs
+
+### Use lowercase SQL
 
 ```sql
 -- Good
@@ -67,7 +69,7 @@ SELECT * FROM users
 Select * From users
 ```
 
-## Use multiple lines
+### Use multiple lines
 
 The only time to put all of your SQL on one line is when you're selecting:
 
@@ -134,7 +136,7 @@ select id,
 from users
 ```
 
-##    Left align everything
+### Left align everything
 
 ```sql
 -- Good
@@ -148,7 +150,7 @@ select id, email
  where email like "%@gmail.com"
 ```
 
-## Use double quotes
+### Use double quotes
 
 Avoid single quotes unless your SQL dialect requires them:
 
@@ -164,7 +166,7 @@ from users
 where email = 'example@domain.com'
 ```
 
-## Column names should be snake_case
+### Column names should be snake_case
 
 ```sql
 -- Good
@@ -189,7 +191,7 @@ select
 from users
 ```
 
-## Indenting where conditions
+### Indenting where conditions
 
 When there's only one where condition, leave it on the same line as `where`:
 
@@ -209,7 +211,7 @@ where
     vertical = "work"
 ```
 
-## Use `as` to alias column names
+### Use `as` to alias column names
 
 ```sql
 -- Good
@@ -227,7 +229,7 @@ select
 from users
 ```
 
-## Group by column name, not number
+### Group by column name, not number
 
 ```sql
 -- Good
@@ -243,7 +245,7 @@ from charges
 group by 1
 ```
 
-## Commas should be at the the end of lines
+### Commas should be at the the end of lines
 
 ```sql
 -- Good
@@ -259,7 +261,7 @@ select
 from users
 ```
 
-## Avoid spaces inside of parenthesis
+### Avoid spaces inside of parenthesis
 
 ```sql
 -- Good
@@ -273,7 +275,7 @@ from users
 where id in ( 1, 2 )
 ```
 
-## Aligning case/when statements
+### Aligning case/when statements
 
 Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` part should be on its own line, indented one level deeper than `when`.
 
@@ -296,7 +298,7 @@ select
 from events
 ```
 
-## CTEs > subqueries
+### CTEs > subqueries
 
 Avoid subqueries; CTEs will make your queries easier to read and reason about.
 
@@ -329,7 +331,7 @@ final as (
 select * from final
 ```
 
-## Use meaningful CTE names
+### Use meaningful CTE names
 
 ```sql
 -- Good
@@ -339,7 +341,7 @@ with ordered_details as (
 with d1 as (
 ```
 
-## Omit `inner` from joins
+### Omit `inner` from joins
 
 ```sql
 -- Good
@@ -357,7 +359,7 @@ from users
 inner join charges on charges.user_id = users.id
 ```
 
-## For join conditions, put the joined table column first
+### For join conditions, put the joined table column first
 
 ```sql
 -- Good
@@ -375,7 +377,7 @@ from users
 join charges on users.id = charges.user_id
 ```
 
-## Join conditions should be on the same line as the join
+### Join conditions should be on the same line as the join
 
 ```sql
 -- Good
@@ -395,7 +397,7 @@ on charges.user_id = users.id
 ```
 
 
-## Avoid aliasing tables
+### Avoid aliasing tables
 
 ```sql
 -- Good
@@ -415,7 +417,7 @@ join charges c on c.user_id = u.id
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
 
-## Partitions
+### Partitions
 
 You can leave it all on its own line or break it up into multiple depending on its length:
 
