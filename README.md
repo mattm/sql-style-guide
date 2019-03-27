@@ -411,6 +411,7 @@ join charges
 on charges.user_id = users.id
 ```
 
+For multiple join conditions, lean towards putting them on the same line, but if the line becomes too long it's fine to move the conditions to new lines.
 
 ### Avoid aliasing tables
 
@@ -432,7 +433,7 @@ join charges c on c.user_id = u.id
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
 
-### Partitions
+### Window functions
 
 You can leave it all on its own line or break it up into multiple depending on its length:
 
