@@ -479,4 +479,4 @@ This style guide was inspired in part by:
 * [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
 * [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
-Hat-tip to Peter Butler and Dan Wyman for providing feedback on this guide.
+Hat-tip to Peter Butler, Dan Wyman, and Simon Ouderkirk for providing feedback on this guide.
