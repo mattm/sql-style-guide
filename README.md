@@ -166,6 +166,17 @@ from users
 where email = 'example@domain.com'
 ```
 
+### Use `!=` over `<>`
+
+Simply because `!=` reads like "not equal" which is closer to how we'd say it out loud.
+
+```sql
+-- Good
+select count(*) as paying_users_count
+from users
+where plan_name != "free"
+```
+
 ### Column names should be snake_case
 
 ```sql
