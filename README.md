@@ -426,7 +426,7 @@ join charges
 on users.id = charges.user_id
 ```
 
-For multiple join conditions, lean towards putting them on the same line, but if the line becomes too long it's fine to move the conditions to new lines.
+For multiple join conditions, place the second, third, etc ones on their own line.
 
 ### Avoid aliasing tables
 
