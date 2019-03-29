@@ -155,7 +155,7 @@ select id, email
 Avoid single quotes unless your SQL dialect requires them:
 
 ```sql
-#-- Good
+-- Good
 select *
 from users
 where email = "example@domain.com"
