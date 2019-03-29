@@ -195,6 +195,10 @@ select
 from users
 ```
 
+### Naming conventions
+
+* Boolean fields should be prefixed with `is_`, `has_`, or `_does`.
+
 ### Always rename aggregates and function-wrapped arguments
 
 ```sql
@@ -480,6 +484,7 @@ select
         order by date_updated desc
     ) as details_rank
 from billingdaddy.billing_stored_details
+
 ```
 
 ## Credits
