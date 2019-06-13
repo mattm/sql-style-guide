@@ -5,7 +5,7 @@ Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a professional data anal
 
 Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
-If you're interested in this topic, you may also enjoy my [Matt On Analytics](http://eepurl.com/dITJS9) newsletter and [my blog](https://mattmazur.com/2019/06/13/mazurs-sql-style-guide/) where I write about data analysis.
+If you're interested in this topic, you may also enjoy my [Matt On Analytics](http://eepurl.com/dITJS9) newsletter and [my blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
 
 ## Example
 
