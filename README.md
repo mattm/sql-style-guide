@@ -420,7 +420,9 @@ inner join charges on charges.user_id = users.id
 
 ```
 
-### For join conditions, put the joined table column first
+### For join conditions, be consistent in which table comes first in the `on` condition
+
+My preference when writing a join is to place the joined table's column _first_ in the `on` condition:
 
 ```sql
 -- Good
@@ -429,14 +431,26 @@ select
     sum(amount) as total_revenue
 from users
 join charges on charges.user_id = users.id
-
--- Bad
-select
-    email,
-    sum(amount) as total_revenue
-from users
-join charges on users.id = charges.user_id
 ```
+
+However, the counterargument is that the `users` table is listed first so it should come first in the `on` condition. And also, by doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
+
+```sql
+-- Good too
+select
+    ...
+from users
+left join charges on users.id = charges.user_id
+-- primary_key = foreign_key --> one-to-many --> fanout
+  
+select
+    ...
+from charges
+left join users on charges.user_id = users.id
+-- foreign_key = primary_key --> many-to-one --> no fanout
+```
+
+Whichever style you adopt, just try to be consistent.
 
 ### Join conditions should be on the same line as the join
 
@@ -511,4 +525,4 @@ This style guide was inspired in part by:
 * [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
 * [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
-Hat-tip to Peter Butler, Dan Wyman, and Simon Ouderkirk for providing feedback on this guide.
+Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, and Claire Herther for providing feedback on this guide.
