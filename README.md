@@ -197,7 +197,7 @@ from users
 
 ### Naming conventions
 
-* Boolean fields should be prefixed with `is_`, `has_`, or `_does`.
+* Boolean fields should be prefixed with `is_`, `has_`, or `does_`.
 
 ### Always rename aggregates and function-wrapped arguments
 
