@@ -90,7 +90,7 @@ select id, email from users
 select count(*) from users
 ```
 
-For everything else, break it into multiple lines:
+The reason for this is simply that it's still easy to read this when everything is on one line. But once you start adding more columns or more complexity, it's easier to read if it's on multiple lines:
 
 ```sql
 -- Good
@@ -197,7 +197,9 @@ from users
 
 ### Naming conventions
 
-* Boolean fields should be prefixed with `is_`, `has_`, or `does_`.
+* Boolean fields should be prefixed with `is_`, `has_`, or `does_`. For example, `is_customer`, `has_unsubscribed`, etc.
+* Date-only fields should be suffixed with `_date`. For example, `report_date`.
+* Date+time fields should be suffixed with `_at`. For example, 'created_at`, `posted_at`, etc.
 
 ### Always rename aggregates and function-wrapped arguments
 
@@ -239,6 +241,20 @@ from users
 where 
     created_at >= '2019-03-01' and 
     vertical = 'work'
+```
+
+### Be explicit in your where conditions
+
+```
+-- Good
+select * from customers where is_cancelled = true
+select * from customers where is_cancelled = false
+
+-- Fine too
+select * from customers where not is_cancelled
+
+-- Bad
+select * from customers where is_cancelled
 ```
 
 ### Use `as` to alias column names
