@@ -3,7 +3,7 @@
 
 Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a professional data analyst who has worked at several startups to help them use data to grow their businesses. This guide is an attempt to document my preferences for formatting SQL in the hope that it may be of some use to others. If you're interested in this topic, you may also enjoy my [Matt On Analytics](http://eepurl.com/dITJS9) newsletter.
 
-Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
+I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
 ## Example
 
@@ -26,7 +26,7 @@ support_interest as (
         email,
         created_at as expressed_interest_at
     from helpscout.conversation
-    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
+    join helpscout.conversation_tag on conversation_tag.conversation_id = conversation.id
     where tag = "beacon-interest"
 
 ), 
@@ -53,8 +53,6 @@ select * from final
 ```
 
 ## Guidelines
-
-### Use 4 spaces to indent, not tabs
 
 ### Use lowercase SQL
 
@@ -393,7 +391,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+join charges on charges.user_id = users.id
 
 -- Bad
 select
@@ -404,7 +402,7 @@ inner join charges on charges.user_id = users.id
 
 ```
 
-### For join conditions, put the joined table column second
+### For join conditions, put the joined table column first
 
 ```sql
 -- Good
@@ -412,14 +410,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+join charges on charges.user_id = users.id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 ```
 
 ### Join conditions should be on the same line as the join
@@ -430,7 +428,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+join charges on charges.user_id = users.id
 
 -- Bad
 select
@@ -438,7 +436,7 @@ select
     sum(amount) as total_revenue
 from users
 join charges
-on users.id = charges.user_id
+on charges.user_id = users.id
 ```
 
 For multiple join conditions, place the second, third, etc ones on their own line.
@@ -451,14 +449,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+join charges on charges.user_id = users.id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users u
-join charges c on u.id = c.user_id
+join charges c on c.user_id = u.id
 ```
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
