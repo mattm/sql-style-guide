@@ -245,7 +245,7 @@ where
 
 ### Be explicit in your where conditions
 
-```
+```sql
 -- Good
 select * from customers where is_cancelled = true
 select * from customers where is_cancelled = false
