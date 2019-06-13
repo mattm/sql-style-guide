@@ -243,7 +243,7 @@ where
     vertical = 'work'
 ```
 
-### Be explicit in your where conditions
+### Be explicit in boolean conditions
 
 ```sql
 -- Good
