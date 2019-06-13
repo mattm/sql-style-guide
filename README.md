@@ -29,7 +29,7 @@ support_interest as (
         created_at as expressed_interest_at
     from helpscout.conversation
     join helpscout.conversation_tag on conversation_tag.conversation_id = conversation.id
-    where tag = "beacon-interest"
+    where tag = 'beacon-interest'
 
 ), 
 
@@ -103,7 +103,7 @@ from users
 -- Good
 select *
 from users
-where email = "example@domain.com"
+where email = 'example@domain.com'
 ```
 
 For queries that have 1 or 2 columns, you can place the columns on the same line. For 3+ columns, place each column name on its own line, including the first item:
@@ -112,7 +112,7 @@ For queries that have 1 or 2 columns, you can place the columns on the same line
 -- Good
 select id, email
 from users
-where email like "%@gmail.com"
+where email like '%@gmail.com'
 
 -- Good
 select user_id, count(*) as total_charges
@@ -142,28 +142,28 @@ from users
 -- Good
 select id, email
 from users
-where email like "%@gmail.com"
+where email like '%@gmail.com'
 
 -- Bad
 select id, email
   from users
- where email like "%@gmail.com"
+ where email like '%@gmail.com'
 ```
 
-### Use double quotes
+### Use single quotes
 
-Avoid single quotes unless your SQL dialect requires them:
+Some SQL dialects like BigQuery support using double quotes, but for most dialects double quotes will wind up referring to column names. For that reason, single quotes are preferable:
 
 ```sql
 -- Good
 select *
 from users
-where email = "example@domain.com"
+where email = 'example@domain.com'
 
 -- Bad
 select *
 from users
-where email = 'example@domain.com'
+where email = "example@domain.com"
 ```
 
 ### Use `!=` over `<>`
@@ -174,7 +174,7 @@ Simply because `!=` reads like "not equal" which is closer to how we'd say it ou
 -- Good
 select count(*) as paying_users_count
 from users
-where plan_name != "free"
+where plan_name != 'free'
 ```
 
 ### Column names should be snake_case
@@ -237,8 +237,8 @@ When there are multiple, indent each one one level deeper than the `where`. Put 
 select id, email
 from users
 where 
-    created_at >= "2019-03-01" and 
-    vertical = "work"
+    created_at >= '2019-03-01' and 
+    vertical = 'work'
 ```
 
 ### Use `as` to alias column names
@@ -312,10 +312,10 @@ where id in ( 1, 2 )
 select *
 from users
 where email in (
-    "user-1@example.com",
-    "user-2@example.com",
-    "user-3@example.com",
-    "user-4@example.com"    
+    'user-1@example.com',
+    'user-2@example.com',
+    'user-3@example.com',
+    'user-4@example.com'
 )
 ```
 
@@ -327,17 +327,17 @@ Each `when` should be on its own line (nothing on the `case` line) and should be
 -- Good
 select
     case
-        when event_name = "viewed_homepage"
-            then "Homepage"
-        when event_name = "viewed_editor"
-            then "Editor"
+        when event_name = 'viewed_homepage'
+            then 'Homepage'
+        when event_name = 'viewed_editor'
+            then 'Editor'
     end as page_name
 from events
 
 -- Bad 
 select
-    case when event_name = "viewed_homepage" then "Homepage"
-        when event_name = "viewed_editor" then "Editor"
+    case when event_name = 'viewed_homepage' then 'Homepage'
+        when event_name = 'viewed_editor' then 'Editor'
     end as page_name
 from events
 ```
