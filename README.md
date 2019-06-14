@@ -201,6 +201,26 @@ from users
 * Date-only fields should be suffixed with `_date`. For example, `report_date`.
 * Date+time fields should be suffixed with `_at`. For example, `created_at`, `posted_at`, etc.
 
+### Column order conventions
+
+Put the primary key first, followed by foreign keys, then by all other columns. If the table has any system columns (`created_at`, `updated_at`, `is_deleted`, etc.), put those last.
+
+```
+-- Good
+select
+    id,
+    name,
+    created_at
+from users
+
+-- Bad
+select
+    created_at,
+    name,
+    id,
+from users
+```
+
 ### Always rename aggregates and function-wrapped arguments
 
 ```sql
@@ -518,4 +538,4 @@ This style guide was inspired in part by:
 * [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
 * [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
-Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, and Claire Carroll for providing feedback on this guide.
+Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, Alex Cano, and Claire Carroll for providing feedback on this guide.
