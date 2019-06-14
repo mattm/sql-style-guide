@@ -494,7 +494,7 @@ select
     sum(amount) as total_revenue
 from users
 join charges on users.id = charges.user_id
-group by emaik
+group by email
 
 -- Bad
 select
