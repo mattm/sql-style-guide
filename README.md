@@ -485,7 +485,7 @@ from users
 left join charges on charges.user_id = users.id
 ```
 
-### Join conditions should be on the same line as the join
+### Single join conditions should be on the same line as the join
 
 ```sql
 -- Good
@@ -494,6 +494,7 @@ select
     sum(amount) as total_revenue
 from users
 join charges on users.id = charges.user_id
+group by emaik
 
 -- Bad
 select
@@ -502,9 +503,22 @@ select
 from users
 join charges
 on users.id = charges.user_id
+group by email
 ```
 
-For multiple join conditions, place the second, third, etc ones on their own line.
+When you have mutliple join conditions, place each one on their own line:
+
+```sql
+-- Good
+select
+    email,
+    sum(amount) as total_revenue
+from users
+join charges on 
+    users.id = charges.user_id and
+    refunded = false
+group by email
+```
 
 ### Avoid aliasing tables
 
