@@ -28,7 +28,7 @@ support_interest as (
         email,
         created_at as expressed_interest_at
     from helpscout.conversation
-    join helpscout.conversation_tag on conversation_tag.conversation_id = conversation.id
+    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where tag = 'beacon-interest'
 
 ), 
@@ -409,34 +409,23 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
-inner join charges on charges.user_id = users.id
+inner join charges on users.id = charges.user_id
 
 ```
 
-### For join conditions, be consistent in which table comes first in the `on` condition
+### For join conditions, put the table that was referenced first immediately after the `on`
 
-My preference when writing a join is to place the joined table's column _first_ in the `on` condition:
+By doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
 
 ```sql
 -- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-join charges on charges.user_id = users.id
-```
-
-However, the counterargument is that the `users` table is listed first so it should come first in the `on` condition. And also, by doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
-
-```sql
--- Good too
 select
     ...
 from users
@@ -448,9 +437,13 @@ select
 from charges
 left join users on charges.user_id = users.id
 -- foreign_key = primary_key --> many-to-one --> no fanout
-```
 
-Whichever style you adopt, just try to be consistent.
+-- Bad
+select
+    ...
+from users
+left join charges on charges.user_id = users.id
+```
 
 ### Join conditions should be on the same line as the join
 
@@ -460,7 +453,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
@@ -468,7 +461,7 @@ select
     sum(amount) as total_revenue
 from users
 join charges
-on charges.user_id = users.id
+on users.id = charges.user_id
 ```
 
 For multiple join conditions, place the second, third, etc ones on their own line.
@@ -481,14 +474,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on charges.user_id = users.id
+join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users u
-join charges c on c.user_id = u.id
+join charges c on u.id = c.user_id
 ```
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
