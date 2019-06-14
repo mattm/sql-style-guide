@@ -177,6 +177,18 @@ from users
 where plan_name != 'free'
 ```
 
+### Table names should be a plural snake case of the noun
+
+```sql
+-- Good
+select * from users
+select * from visit_logs
+
+-- Bad
+select * from user
+select * from visitLog
+```
+
 ### Column names should be snake_case
 
 ```sql
