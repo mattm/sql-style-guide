@@ -369,10 +369,18 @@ where email in (
 
 ### Aligning case/when statements
 
-Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` part should be on its own line, indented one level deeper than `when`.
+Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` can be on the same line or on its own line below it, just aim to be consistent.
 
 ```sql
 -- Good
+select
+    case
+        when event_name = 'viewed_homepage' then 'Homepage'
+        when event_name = 'viewed_editor' then 'Editor'
+    end as page_name
+from events
+
+-- Good too
 select
     case
         when event_name = 'viewed_homepage'
