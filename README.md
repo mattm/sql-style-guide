@@ -53,7 +53,6 @@ final as (
 
 select * from final
 ```
-
 ## Guidelines
 
 ### Use lowercase SQL
@@ -177,6 +176,72 @@ from users
 where plan_name != 'free'
 ```
 
+### Commas should be at the the end of lines
+
+Sorry Python folks:
+
+```sql
+-- Good
+select
+    id,
+    email
+from users
+
+-- Bad
+select
+    id
+    , email
+from users
+```
+
+### Indenting where conditions
+
+When there's only one where condition, leave it on the same line as `where`:
+
+```sql
+select email
+from users
+where id = 1234
+```
+
+When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
+
+```sql
+select id, email
+from users
+where 
+    created_at >= '2019-03-01' and 
+    vertical = 'work'
+```
+
+### Avoid spaces inside of parenthesis
+
+```sql
+-- Good
+select *
+from users
+where id in (1, 2)
+
+-- Bad
+select *
+from users
+where id in ( 1, 2 )
+```
+
+### Break long lists of `in` values into multiple indented lines
+
+```sql
+-- Good
+select *
+from users
+where email in (
+    'user-1@example.com',
+    'user-2@example.com',
+    'user-3@example.com',
+    'user-4@example.com'
+)
+```
+
 ### Table names should be a plural snake case of the noun
 
 ```sql
@@ -233,6 +298,122 @@ select
 from users
 ```
 
+### Include `inner` for inner joins
+
+Better to be explicit so that the join type is crystal clear:
+
+```sql
+-- Good
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges on users.id = charges.user_id
+
+-- Bad
+select
+    email,
+    sum(amount) as total_revenue
+from users
+join charges on users.id = charges.user_id
+```
+
+### For join conditions, put the table that was referenced first immediately after the `on`
+
+By doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
+
+```sql
+-- Good
+select
+    ...
+from users
+left join charges on users.id = charges.user_id
+-- primary_key = foreign_key --> one-to-many --> fanout
+  
+select
+    ...
+from charges
+left join users on charges.user_id = users.id
+-- foreign_key = primary_key --> many-to-one --> no fanout
+
+-- Bad
+select
+    ...
+from users
+left join charges on charges.user_id = users.id
+```
+
+### Single join conditions should be on the same line as the join
+
+```sql
+-- Good
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges on users.id = charges.user_id
+group by email
+
+-- Bad
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges
+on users.id = charges.user_id
+group by email
+```
+
+When you have mutliple join conditions, place each one on their own indented line:
+
+```sql
+-- Good
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges on 
+    users.id = charges.user_id and
+    refunded = false
+group by email
+```
+
+### Avoid aliasing tables
+
+```sql
+-- Good
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges on users.id = charges.user_id
+
+-- Bad
+select
+    email,
+    sum(amount) as total_revenue
+from users u
+inner join charges c on u.id = c.user_id
+```
+
+The only exception is when you need to join onto a table more than once and need to distinguish them.
+
+### Don't include table names unless you have to
+
+```sql
+-- Good
+select
+    id,
+    name
+from companies
+
+-- Bad
+select
+    companies.id,
+    companies.name
+from companies
+```
+
 ### Always rename aggregates and function-wrapped arguments
 
 ```sql
@@ -255,26 +436,6 @@ from hubspot.contact
 where property_beacon_interest is not null
 ```
 
-### Indenting where conditions
-
-When there's only one where condition, leave it on the same line as `where`:
-
-```sql
-select email
-from users
-where id = 1234
-```
-
-When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
-
-```sql
-select id, email
-from users
-where 
-    created_at >= '2019-03-01' and 
-    vertical = 'work'
-```
-
 ### Be explicit in boolean conditions
 
 ```sql
@@ -282,11 +443,9 @@ where
 select * from customers where is_cancelled = true
 select * from customers where is_cancelled = false
 
--- Fine too
-select * from customers where not is_cancelled
-
 -- Bad
 select * from customers where is_cancelled
+select * from customers where not is_cancelled
 ```
 
 ### Use `as` to alias column names
@@ -359,52 +518,6 @@ from mysql_helpscout.helpscout_companies
 group by signup_year
 ```
 
-### Commas should be at the the end of lines
-
-Sorry Python folks:
-
-```sql
--- Good
-select
-    id,
-    email
-from users
-
--- Bad
-select
-    id
-    , email
-from users
-```
-
-### Avoid spaces inside of parenthesis
-
-```sql
--- Good
-select *
-from users
-where id in (1, 2)
-
--- Bad
-select *
-from users
-where id in ( 1, 2 )
-```
-
-### Break long lists of `in` values into multiple indented lines
-
-```sql
--- Good
-select *
-from users
-where email in (
-    'user-1@example.com',
-    'user-2@example.com',
-    'user-3@example.com',
-    'user-4@example.com'
-)
-```
-
 ### Aligning case/when statements
 
 Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` can be on the same line or on its own line below it, just aim to be consistent.
@@ -436,7 +549,7 @@ select
 from events
 ```
 
-### CTEs > subqueries
+### Use CTEs, not subqueries
 
 Avoid subqueries; CTEs will make your queries easier to read and reason about.
 
@@ -467,6 +580,17 @@ final as (
 )
 
 select * from final
+
+-- Bad
+select user_id, name
+from (
+    select
+        user_id,
+        name,
+        row_number() over (partition by user_id order by date_updated desc) as details_rank
+    from billingdaddy.billing_stored_details
+) ranked
+where details_rank = 1
 ```
 
 ### Use meaningful CTE names
@@ -478,106 +602,6 @@ with ordered_details as (
 -- Bad
 with d1 as (
 ```
-
-### Include `inner` for inner joins
-
-Better to be explicit so that the join type is crystal clear:
-
-```sql
--- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-inner join charges on users.id = charges.user_id
-
--- Bad
-select
-    email,
-    sum(amount) as total_revenue
-from users
-join charges on users.id = charges.user_id
-```
-
-### For join conditions, put the table that was referenced first immediately after the `on`
-
-By doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
-
-```sql
--- Good
-select
-    ...
-from users
-left join charges on users.id = charges.user_id
--- primary_key = foreign_key --> one-to-many --> fanout
-  
-select
-    ...
-from charges
-left join users on charges.user_id = users.id
--- foreign_key = primary_key --> many-to-one --> no fanout
-
--- Bad
-select
-    ...
-from users
-left join charges on charges.user_id = users.id
-```
-
-### Single join conditions should be on the same line as the join
-
-```sql
--- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-inner join charges on users.id = charges.user_id
-group by email
-
--- Bad
-select
-    email,
-    sum(amount) as total_revenue
-from users
-inner join charges
-on users.id = charges.user_id
-group by email
-```
-
-When you have mutliple join conditions, place each one on their own line:
-
-```sql
--- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-inner join charges on 
-    users.id = charges.user_id and
-    refunded = false
-group by email
-```
-
-### Avoid aliasing tables
-
-```sql
--- Good
-select
-    email,
-    sum(amount) as total_revenue
-from users
-inner join charges on users.id = charges.user_id
-
--- Bad
-select
-    email,
-    sum(amount) as total_revenue
-from users u
-inner join charges c on u.id = c.user_id
-```
-
-The only exception is when you need to join onto a table more than once and need to distinguish them.
 
 ### Window functions
 
@@ -600,7 +624,6 @@ select
         order by date_updated desc
     ) as details_rank
 from billingdaddy.billing_stored_details
-
 ```
 
 ## Credits
