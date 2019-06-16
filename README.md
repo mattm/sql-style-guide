@@ -341,7 +341,27 @@ from companies
 group by timestamp_trunc(com_created_at, year)
 ```
 
+### Grouping columns should go first
+
+```sql
+-- Good
+select
+  timestamp_trunc(com_created_at, year) as signup_year,
+  count(*) as total_companies
+from companies
+group by signup_year
+
+-- Bad
+select
+  count(*) as total_companies,
+  timestamp_trunc(com_created_at, year) as signup_year
+from mysql_helpscout.helpscout_companies
+group by signup_year
+```
+
 ### Commas should be at the the end of lines
+
+Sorry Python folks:
 
 ```sql
 -- Good
