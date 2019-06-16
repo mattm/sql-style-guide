@@ -323,6 +323,24 @@ from charges
 group by 1
 ```
 
+### Take advantage of lateral column aliasing
+
+```sql
+-- Good
+select
+  timestamp_trunc(com_created_at, year) as signup_year,
+  count(*) as total_companies
+from companies
+group by signup_year
+
+-- Bad
+select
+  timestamp_trunc(com_created_at, year) as signup_year,
+  count(*) as total_companies
+from companies
+group by timestamp_trunc(com_created_at, year)
+```
+
 ### Commas should be at the the end of lines
 
 ```sql
