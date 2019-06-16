@@ -28,7 +28,7 @@ support_interest as (
         email,
         created_at as expressed_interest_at
     from helpscout.conversation
-    join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
+    inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where tag = 'beacon-interest'
 
 ), 
@@ -441,7 +441,9 @@ with ordered_details as (
 with d1 as (
 ```
 
-### Omit `inner` for inner joins
+### Include `inner` for inner joins
+
+Better to be explicit so that the join type is crystal clear:
 
 ```sql
 -- Good
@@ -449,15 +451,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+inner join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users
-inner join charges on users.id = charges.user_id
-
+join charges on users.id = charges.user_id
 ```
 
 ### For join conditions, put the table that was referenced first immediately after the `on`
@@ -493,7 +494,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+inner join charges on users.id = charges.user_id
 group by email
 
 -- Bad
@@ -501,7 +502,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges
+inner join charges
 on users.id = charges.user_id
 group by email
 ```
@@ -514,7 +515,7 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on 
+inner join charges on 
     users.id = charges.user_id and
     refunded = false
 group by email
@@ -528,14 +529,14 @@ select
     email,
     sum(amount) as total_revenue
 from users
-join charges on users.id = charges.user_id
+inner join charges on users.id = charges.user_id
 
 -- Bad
 select
     email,
     sum(amount) as total_revenue
 from users u
-join charges c on u.id = c.user_id
+inner join charges c on u.id = c.user_id
 ```
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
