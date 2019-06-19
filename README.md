@@ -57,6 +57,8 @@ select * from final
 
 ### Use lowercase SQL
 
+It's just as readable as uppercase SQL and you won't have to constantly be holding down a shift key.
+
 ```sql
 -- Good
 select * from users
