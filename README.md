@@ -180,8 +180,6 @@ where plan_name != 'free'
 
 ### Commas should be at the the end of lines
 
-Sorry Python folks:
-
 ```sql
 -- Good
 select
