@@ -25,8 +25,8 @@ with hubspot_interest as (
 support_interest as (
 
     select 
-        email,
-        created_at as expressed_interest_at
+        conversation.email,
+        conversation.created_at as expressed_interest_at
     from helpscout.conversation
     inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
     where tag = 'beacon-interest'
@@ -305,15 +305,15 @@ Better to be explicit so that the join type is crystal clear:
 ```sql
 -- Good
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 
 -- Bad
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 join charges on users.id = charges.user_id
 ```
@@ -348,16 +348,16 @@ left join charges on charges.user_id = users.id
 ```sql
 -- Good
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 group by email
 
 -- Bad
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 inner join charges
 on users.id = charges.user_id
@@ -369,8 +369,8 @@ When you have mutliple join conditions, place each one on their own indented lin
 ```sql
 -- Good
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 inner join charges on 
     users.id = charges.user_id and
@@ -383,22 +383,24 @@ group by email
 ```sql
 -- Good
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users
 inner join charges on users.id = charges.user_id
 
 -- Bad
 select
-    email,
-    sum(amount) as total_revenue
+    users.email,
+    sum(charges.amount) as total_revenue
 from users u
 inner join charges c on u.id = c.user_id
 ```
 
 The only exception is when you need to join onto a table more than once and need to distinguish them.
 
-### Don't include table names unless you have to
+### Include the table when there is a join, but omit it otherwise
+
+When there are no join involved, there's no ambiguity around which table the columns came from so you can leave the table name out:
 
 ```sql
 -- Good
@@ -412,6 +414,25 @@ select
     companies.id,
     companies.name
 from companies
+```
+
+But when there are joins involved, it's better to be explicit so it's clear where the columns originated:
+
+```sql
+-- Good
+select
+    users.email,
+    sum(charges.amount) as total_revenue
+from users
+inner join charges on users.id = charges.user_id
+
+-- Bad
+select
+    email,
+    sum(amount) as total_revenue
+from users
+inner join charges on users.id = charges.user_id
+
 ```
 
 ### Always rename aggregates and function-wrapped arguments
