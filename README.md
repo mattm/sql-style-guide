@@ -29,7 +29,7 @@ support_interest as (
         conversation.created_at as expressed_interest_at
     from helpscout.conversation
     inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
-    where tag = 'beacon-interest'
+    where conversation_tag.tag = 'beacon-interest'
 
 ), 
 
