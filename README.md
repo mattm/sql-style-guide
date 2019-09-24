@@ -137,7 +137,9 @@ select id,
 from users
 ```
 
-### Left align everything
+### Left align SQL keywords
+
+Some IDEs have the ability to automatically format SQL so that the spaces after the SQL keywords are vertically aligned. This is cumbersome to do by hand (and in my opinion harder to read anyway) so I recommend just left aligning all of the keywords:
 
 ```sql
 -- Good
