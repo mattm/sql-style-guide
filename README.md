@@ -380,7 +380,9 @@ inner join charges on
 group by email
 ```
 
-### Avoid aliasing tables
+### Avoid aliasing table names most of the time
+
+It's tempting to abbreviate table names like `users` to just `u` and `charges` to just `c`, but it winds up making the SQL less clear:
 
 ```sql
 -- Good
@@ -392,13 +394,42 @@ inner join charges on users.id = charges.user_id
 
 -- Bad
 select
-    users.email,
-    sum(charges.amount) as total_revenue
+    u.email,
+    sum(c.amount) as total_revenue
 from users u
 inner join charges c on u.id = c.user_id
 ```
 
-The only exception is when you need to join onto a table more than once and need to distinguish them.
+Most of the time you'll want to use the full table name.
+
+There are two exceptions though:
+
+If you you need to join to a table more than once in the same query and need to distinguish each version of it, aliases are necessary.
+
+Also, if you're working with very long table names, it can be useful to abbreviate them (but still use meaningful names):
+
+```
+-- Good: Using clear table aliases
+select
+  companies.com_name,
+  beacons.created_at
+from stg_mysql_helpscout__helpscout_companies companies
+inner join stg_mysql_helpscout__helpscout_beacons_v2 beacons on companies.com_id = beacons.com_id
+
+-- OK: Using no table aliases
+select
+  stg_mysql_helpscout__helpscout_companies.com_name,
+  stg_mysql_helpscout__helpscout_beacons_v2.created_at
+from stg_mysql_helpscout__helpscout_companies
+inner join stg_mysql_helpscout__helpscout_beacons_v2 on stg_mysql_helpscout__helpscout_companies.com_id = stg_mysql_helpscout__helpscout_beacons_v2.com_id
+
+-- Bad: Use unclear table aliases
+select
+  c.com_name,
+  b.created_at
+from stg_mysql_helpscout__helpscout_companies c
+inner join stg_mysql_helpscout__helpscout_beacons_v2 b on c.com_id = b.com_id
+```
 
 ### Include the table when there is a join, but omit it otherwise
 
