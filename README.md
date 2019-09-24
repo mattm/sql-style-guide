@@ -408,7 +408,7 @@ If you you need to join to a table more than once in the same query and need to 
 
 Also, if you're working with very long table names, it can be useful to abbreviate them (but still use meaningful names):
 
-```
+```sql
 -- Good: Using clear table aliases
 select
   companies.com_name,
