@@ -382,7 +382,7 @@ group by email
 
 ### Avoid aliasing table names most of the time
 
-It's tempting to abbreviate table names like `users` to just `u` and `charges` to just `c`, but it winds up making the SQL less clear:
+It can be tempting to abbreviate table names like `users` to `u` and `charges` to `c`, but it winds up making the SQL less readable:
 
 ```sql
 -- Good
@@ -400,30 +400,30 @@ from users u
 inner join charges c on u.id = c.user_id
 ```
 
-Most of the time you'll want to use the full table name.
+Most of the time you'll want to type out the full table name.
 
-There are two exceptions though:
+There are two exceptions:
 
 If you you need to join to a table more than once in the same query and need to distinguish each version of it, aliases are necessary.
 
-Also, if you're working with very long table names, it can be useful to abbreviate them (but still use meaningful names):
+Also, if you're working with long or ambiguous table names, it can be useful to alias them (but still use meaningful names):
 
 ```sql
--- Good: Using clear table aliases
+-- Good: Meaningful table aliases
 select
   companies.com_name,
   beacons.created_at
 from stg_mysql_helpscout__helpscout_companies companies
 inner join stg_mysql_helpscout__helpscout_beacons_v2 beacons on companies.com_id = beacons.com_id
 
--- OK: Using no table aliases
+-- OK: No table aliases
 select
   stg_mysql_helpscout__helpscout_companies.com_name,
   stg_mysql_helpscout__helpscout_beacons_v2.created_at
 from stg_mysql_helpscout__helpscout_companies
 inner join stg_mysql_helpscout__helpscout_beacons_v2 on stg_mysql_helpscout__helpscout_companies.com_id = stg_mysql_helpscout__helpscout_beacons_v2.com_id
 
--- Bad: Use unclear table aliases
+-- Bad: Unclear table aliases
 select
   c.com_name,
   b.created_at
