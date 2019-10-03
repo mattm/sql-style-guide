@@ -520,7 +520,9 @@ select
 from users
 ```
 
-### Group by column name, not number
+### Group using column names or numbers, but not both
+
+I prefer grouping by name, but grouping by numbers is [also fine](https://blog.getdbt.com/write-better-sql-a-defense-of-group-by-1/).
 
 ```sql
 -- Good
@@ -528,15 +530,21 @@ select user_id, count(*) as total_charges
 from charges
 group by user_id
 
--- Bad
-select
-    user_id,
-    count(*) as total_charges
+-- Good
+select user_id, count(*) as total_charges
 from charges
 group by 1
+
+-- Bad
+select
+    timestamp_trunc(created_at, month) as signup_month,
+    vertical,
+    count(*) as users_count
+from users
+group by 1, vertical
 ```
 
-### Take advantage of lateral column aliasing
+### Take advantage of lateral column aliasing when grouping by name
 
 ```sql
 -- Good
