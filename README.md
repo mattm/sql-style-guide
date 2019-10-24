@@ -72,10 +72,7 @@ Select * From users
 
 ### Single line vs multiple line queries
 
-The only time to put all of your SQL on one line is when you're selecting:
-
-* All columns (*) or selecting 1 or 2 columns
-* _And_ there's no additional complexity in your query
+The only time you should place all of your SQL on a single line is when you're selecting one thing and there's no additional complexity in the query:
 
 ```sql
 -- Good
@@ -85,13 +82,10 @@ select * from users
 select id from users
 
 -- Good
-select id, email from users
-
--- Good
 select count(*) from users
 ```
 
-The reason for this is simply that it's still easy to read this when everything is on one line. But once you start adding more columns or more complexity, it's easier to read if it's on multiple lines:
+Once you start adding more columns or more complexity, the query becomes easier to read if it's spread out on multiple lines:
 
 ```sql
 -- Good
@@ -105,27 +99,13 @@ from users
 select *
 from users
 where email = 'example@domain.com'
-```
-
-For queries that have 1 or 2 columns, you can place the columns on the same line. For 3+ columns, place each column name on its own line, including the first item:
-
-```sql
--- Good
-select id, email
-from users
-where email like '%@gmail.com'
-
--- Good
-select user_id, count(*) as total_charges
-from charges
-group by user_id
 
 -- Good
 select
-    id,
-    email,
-    created_at
-from users
+    user_id,
+    count(*) as total_charges
+from charges
+group by user_id
 
 -- Bad
 select id, email, created_at
