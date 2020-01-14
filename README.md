@@ -570,6 +570,7 @@ select
     case
         when event_name = 'viewed_homepage' then 'Homepage'
         when event_name = 'viewed_editor' then 'Editor'
+        else 'Other'
     end as page_name
 from events
 
@@ -580,6 +581,7 @@ select
             then 'Homepage'
         when event_name = 'viewed_editor'
             then 'Editor'
+        else 'Other'            
     end as page_name
 from events
 
@@ -587,6 +589,7 @@ from events
 select
     case when event_name = 'viewed_homepage' then 'Homepage'
         when event_name = 'viewed_editor' then 'Editor'
+        else 'Other'        
     end as page_name
 from events
 ```
