@@ -1,16 +1,51 @@
 ∙ [English](README.md) ∙ [简体中文](README-zh.md)
 
-# Mazur's SQL Style Guide
+# Mazur's 的SQL风格指南
 
-Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a data analyst who has worked at several startups to help them use data to grow their businesses. This guide is an attempt to document my preferences for formatting SQL in the hope that it may be of some use to others. If you or your team do not already have a SQL style guide, this may serve as a good starting point which you can adopt and update based on your preferences. 
+- [Mazur's 的SQL风格指南](#mazur-s--sql----)
+    * [示例](##示例)
+    * [指南](##指南)
+        + [SQL语句采用小写](##SQL语句采用小写)
+        + [单行查询与多行查询](#---------)
+        + [SQL关键字左对齐](#sql------)
+        + [使用单引号](#-----)
+        + [使用 `!=` 而不是 `<>`](#----------------)
+        + [逗号应该在行尾](#-------)
+        + [缩进Where条件](#--where--)
+        + [避免括号里面的空格](#---------)
+        + [将in值的长列表分成多个缩进行](#-in------------)
+        + [表名应该是名词的复数蛇形`例如：file_names、 line_numbers`形式](#----------------file-names--line-numbers---)
+        + [列名应该是蛇形命名](#---------)
+        + [列名的约定](#-----)
+        + [列顺序约定](#-----)
+        + [内联接中使用`inner`](#-------inner-)
+        + [对于连接条件，将其直接放在首先引用的表`on`之后](#--------------------on---)
+        + [单个连接条件应与连接在同一行上](#---------------)
+        + [在大多数情况下避免表名的别名](#--------------)
+        + [当存在连接时包含表，否则省略表](#---------------)
+        + [聚合和函数包装的参数需要重新命名](#----------------)
+        + [让布尔条件更加易于理解](#-----------)
+        + [使用`as`来指定列的别名](#---as--------)
+        + [使用列名或列号进行分组，但不能同时使用两种](#---------------------)
+        + [在按名称分组时，利用列的别名](#--------------)
+        + [分组的列放在最前](#--------)
+        + [对齐 `case/when` 语句](#----case-when----)
+        + [使用CTES而不是自查询](#--ctes------)
+        + [使用有意义的CTE的名字](#------cte---)
+        + [开窗函数](#----)
+    * [鸣谢](#--)
+    
 
-Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
+你好!我是[Matt Mazur](https://mattmazur.com/) ，是一名数据分析师，曾在几家初创公司工作过，帮助他们利用数据发展业务。本指南试图记录我对格式化SQL的偏好，希望它对其他人可能有一些用处。如果您或您的团队还没有SQL风格指南，这可以作为一个很好的起点，您可以根据自己的偏好采用和更新它。
 
-If you're interested in this topic, you may also enjoy my [LookML Style Guide](https://github.com/mattm/lookml-style-guide) or my [blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
+另外，我在[Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) 是一个坚定的信徒，所以如果你不同意我的观点，请给我留言，我很乐意和你讨论。
+Also, I'm a strong believer in having o if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
-## Example
+如果你对这个主题感兴趣，你可能也会喜欢我LookML的风格指南[LookML Style Guide](https://github.com/mattm/lookml-style-guide) 和我关于分析和数据分析的博客 [blog](https://mattmazur.com/category/analytics/) 。
 
-Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
+## 示例
+
+下面是一个非常重要的查询，可以让您了解这个风格指南在实际中是什么样的：
 
 ```sql
 with hubspot_interest as (
@@ -54,10 +89,11 @@ final as (
 
 select * from final
 ```
-## Guidelines
+## 指南
 
-### Use lowercase SQL
+### SQL语句采用小写
 
+它就像大写SQL一样易读，而且你不必总是按住shift键。
 It's just as readable as uppercase SQL and you won't have to constantly be holding down a shift key.
 
 ```sql
@@ -71,9 +107,9 @@ SELECT * FROM users
 Select * From users
 ```
 
-### Single line vs multiple line queries
+### 单行查询与多行查询
 
-The only time you should place all of your SQL on a single line is when you're selecting one thing and there's no additional complexity in the query:
+只有当查询结果集很醒目且查询条件并不复杂的时候，才应该将你的SQL放在一行中。
 
 ```sql
 -- Good
@@ -86,7 +122,7 @@ select id from users
 select count(*) from users
 ```
 
-Once you start adding more columns or more complexity, the query becomes easier to read if it's spread out on multiple lines:
+当你开始查询更多列或更复杂的内容时，如果查询分布在多行上，阅读起来会更容易。
 
 ```sql
 -- Good
@@ -118,9 +154,9 @@ select id,
 from users
 ```
 
-### Left align SQL keywords
+### SQL关键字左对齐
 
-Some IDEs have the ability to automatically format SQL so that the spaces after the SQL keywords are vertically aligned. This is cumbersome to do by hand (and in my opinion harder to read anyway) so I recommend just left aligning all of the keywords:
+一些IDE能够自动格式化SQL，以便SQL关键字之后的空格垂直对齐。手工做这个很麻烦(而且在我看来很难阅读)，所以我建议所有的关键字都左对齐
 
 ```sql
 -- Good
@@ -134,9 +170,9 @@ select id, email
  where email like '%@gmail.com'
 ```
 
-### Use single quotes
+### 使用单引号
 
-Some SQL dialects like BigQuery support using double quotes, but for most dialects double quotes will wind up referring to column names. For that reason, single quotes are preferable:
+一些SQL方言，比如BigQuery，支持使用双引号，但是对于大多数方言，双引号最终会指向列名。出于这个原因，单引号更好。
 
 ```sql
 -- Good
@@ -150,9 +186,9 @@ from users
 where email = "example@domain.com"
 ```
 
-### Use `!=` over `<>`
+### 使用 `!=` 而不是 `<>`
 
-Simply because `!=` reads like "not equal" which is closer to how we'd say it out loud.
+很简单的原因，因为!=读起来像“不相等”，更接近我们大声说出来的方式。
 
 ```sql
 -- Good
@@ -161,7 +197,7 @@ from users
 where plan_name != 'free'
 ```
 
-### Commas should be at the the end of lines
+### 逗号应该在行尾
 
 ```sql
 -- Good
@@ -177,9 +213,9 @@ select
 from users
 ```
 
-### Indenting where conditions
+### 缩进Where条件
 
-When there's only one where condition, leave it on the same line as `where`:
+当只有一个where条件时，让它和where在同一行
 
 ```sql
 select email
@@ -187,7 +223,7 @@ from users
 where id = 1234
 ```
 
-When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
+当有多个时，每一个都要比where缩进一层。将逻辑运算符放在前一个条件的末尾
 
 ```sql
 select id, email
@@ -197,7 +233,7 @@ where
     vertical = 'work'
 ```
 
-### Avoid spaces inside of parenthesis
+### 避免括号里面的空格
 
 ```sql
 -- Good
@@ -211,7 +247,7 @@ from users
 where id in ( 1, 2 )
 ```
 
-### Break long lists of `in` values into multiple indented lines
+### 将in值的长列表分成多个缩进行
 
 ```sql
 -- Good
@@ -225,7 +261,7 @@ where email in (
 )
 ```
 
-### Table names should be a plural snake case of the noun
+### 表名应该是名词的复数蛇形`例如：file_names、 line_numbers`形式
 
 ```sql
 -- Good
@@ -237,7 +273,7 @@ select * from user
 select * from visitLog
 ```
 
-### Column names should be snake_case
+### 列名应该是蛇形命名
 
 ```sql
 -- Good
@@ -255,15 +291,17 @@ select
 from users
 ```
 
-### Column name conventions
+### 列名的约定
 
-* Boolean fields should be prefixed with `is_`, `has_`, or `does_`. For example, `is_customer`, `has_unsubscribed`, etc.
-* Date-only fields should be suffixed with `_date`. For example, `report_date`.
-* Date+time fields should be suffixed with `_at`. For example, `created_at`, `posted_at`, etc.
+* Boolean 字段应该加前缀 `is_`, `has_`, or `does_`. 示例, `is_customer`, `has_unsubscribed`, 等.
+* Date-only 字段应该加后缀 `_date`. 示例, `report_date`.
+* Date+time 字段应该加后缀 `_at`. 示例, `created_at`, `posted_at`, 等.
 
-### Column order conventions
+### 列顺序约定
 
-Put the primary key first, followed by foreign keys, then by all other columns. If the table has any system columns (`created_at`, `updated_at`, `is_deleted`, etc.), put those last.
+将主键放在前面，然后是外键，然后是所有其他列。如果表中有任何系统列(创建于，更新于，删除，等等)，将它们放在最后。
+Put the primary key first, 
+followed by foreign keys, 
 
 ```sql
 -- Good
@@ -281,9 +319,9 @@ select
 from users
 ```
 
-### Include `inner` for inner joins
+### 内联接中使用`inner`
 
-Better to be explicit so that the join type is crystal clear:
+最好是显式的，这样连接类型就非常清楚了
 
 ```sql
 -- Good
@@ -301,9 +339,9 @@ from users
 join charges on users.id = charges.user_id
 ```
 
-### For join conditions, put the table that was referenced first immediately after the `on`
+### 对于连接条件，将其直接放在首先引用的表`on`之后
 
-By doing it this way it makes it easier to determine if your join is going to cause the results to fan out:
+通过这样做，可以更容易地确定您的连接是否会导致结果呈扇形分布
 
 ```sql
 -- Good
@@ -326,7 +364,7 @@ from users
 left join charges on charges.user_id = users.id
 ```
 
-### Single join conditions should be on the same line as the join
+### 单个连接条件应与连接在同一行上
 
 ```sql
 -- Good
@@ -347,7 +385,7 @@ on users.id = charges.user_id
 group by email
 ```
 
-When you have mutliple join conditions, place each one on their own indented line:
+当您有多个连接条件时，请将每个条件放在它们自己的缩进行中：
 
 ```sql
 -- Good
@@ -361,9 +399,9 @@ inner join charges on
 group by email
 ```
 
-### Avoid aliasing table names most of the time
+### 在大多数情况下避免表名的别名
 
-It can be tempting to abbreviate table names like `users` to `u` and `charges` to `c`, but it winds up making the SQL less readable:
+很容易将表名(如`users`)缩写为`u`，将`charges` 缩写为`c`，但是这样会降低SQL的可读性
 
 ```sql
 -- Good
@@ -381,13 +419,13 @@ from users u
 inner join charges c on u.id = c.user_id
 ```
 
-Most of the time you'll want to type out the full table name.
+大多数情况下，您需要键入完整的表名。
 
-There are two exceptions:
+有两个例外:
 
-If you you need to join to a table more than once in the same query and need to distinguish each version of it, aliases are necessary.
+如果您需要在同一个查询中多次连接到一个表，并且需要区分该表的每个版本，那么就需要别名。
 
-Also, if you're working with long or ambiguous table names, it can be useful to alias them (but still use meaningful names):
+另外，如果您使用的表名很长或有歧义，可以使用别名(但仍然使用有意义的名称)。
 
 ```sql
 -- Good: Meaningful table aliases
@@ -412,9 +450,9 @@ from stg_mysql_helpscout__helpscout_companies c
 inner join stg_mysql_helpscout__helpscout_beacons_v2 b on c.com_id = b.com_id
 ```
 
-### Include the table when there is a join, but omit it otherwise
+### 当存在连接时包含表，否则省略表
 
-When there are no join involved, there's no ambiguity around which table the columns came from so you can leave the table name out:
+当没有涉及到连接时，就不会对列来自哪个表产生歧义，因此可以省略表名。
 
 ```sql
 -- Good
@@ -430,7 +468,7 @@ select
 from companies
 ```
 
-But when there are joins involved, it's better to be explicit so it's clear where the columns originated:
+但是，当涉及到连接时，最好是显式的，这样就可以清楚地知道列起源于何处
 
 ```sql
 -- Good
@@ -449,7 +487,7 @@ inner join charges on users.id = charges.user_id
 
 ```
 
-### Always rename aggregates and function-wrapped arguments
+### 聚合和函数包装的参数需要重新命名
 
 ```sql
 -- Good
@@ -471,7 +509,7 @@ from hubspot.contact
 where property_beacon_interest is not null
 ```
 
-### Be explicit in boolean conditions
+### 让布尔条件更加易于理解
 
 ```sql
 -- Good
@@ -483,7 +521,7 @@ select * from customers where is_cancelled
 select * from customers where not is_cancelled
 ```
 
-### Use `as` to alias column names
+### 使用`as`来指定列的别名
 
 ```sql
 -- Good
@@ -501,9 +539,9 @@ select
 from users
 ```
 
-### Group using column names or numbers, but not both
+### 使用列名或列号进行分组，但不能同时使用两种
 
-I prefer grouping by name, but grouping by numbers is [also fine](https://blog.getdbt.com/write-better-sql-a-defense-of-group-by-1/).
+我更喜欢按名称分组，但按数字分组也不错[also fine](https://blog.getdbt.com/write-better-sql-a-defense-of-group-by-1/).
 
 ```sql
 -- Good
@@ -525,7 +563,7 @@ from users
 group by 1, vertical
 ```
 
-### Take advantage of lateral column aliasing when grouping by name
+### 在按名称分组时，利用列的别名
 
 ```sql
 -- Good
@@ -543,7 +581,7 @@ from companies
 group by timestamp_trunc(com_created_at, year)
 ```
 
-### Grouping columns should go first
+### 分组的列放在最前
 
 ```sql
 -- Good
@@ -561,9 +599,9 @@ from mysql_helpscout.helpscout_companies
 group by signup_year
 ```
 
-### Aligning case/when statements
+### 对齐 `case/when` 语句
 
-Each `when` should be on its own line (nothing on the `case` line) and should be indented one level deeper than the `case` line. The `then` can be on the same line or on its own line below it, just aim to be consistent.
+每个`when`都应该在自己的行上( `case`行上没有任何内容)，并且应该缩进比 `case`行深一层。`then`可以在同一条线上，也可以在它的下方，目的是保持一致。
 
 ```sql
 -- Good
@@ -595,15 +633,15 @@ select
 from events
 ```
 
-### Use CTEs, not subqueries
+### 使用CTES而不是自查询
 
-Avoid subqueries; CTEs will make your queries easier to read and reason about.
+避免子查询; CTEs将使您的查询更容易阅读和推理。
 
-When using CTEs, pad the query with new lines. 
+使用CTEs时，用新行填充查询。
 
-If you use any CTEs, always have a CTE named `final` and `select * from final` at the end. That way you can quickly inspect the output of other CTEs used in the query to debug the results.
+如果使用任何CTE，请始终使用名为`final`的CTE，并在 `select * from final` 结尾。通过这种方式， 您可以快速检查查询中使用的其他cte的输出，以调试结果。
 
-Closing CTE parentheses should use the same indentation level as `with` and the CTE names.
+结束的CTE括号应该使用与`with`和CTE名称相同的缩进级别 。
 
 ```sql
 -- Good
@@ -639,7 +677,7 @@ from (
 where details_rank = 1
 ```
 
-### Use meaningful CTE names
+### 使用有意义的CTE的名字
 
 ```sql
 -- Good
@@ -649,9 +687,9 @@ with ordered_details as (
 with d1 as (
 ```
 
-### Window functions
+### 开窗函数
 
-You can leave it all on its own line or break it up into multiple depending on its length:
+你可以把它单独放在一行上，或者根据它的长度把它分成多个排列
 
 ```sql
 -- Good
@@ -672,12 +710,12 @@ select
 from billingdaddy.billing_stored_details
 ```
 
-## Credits
+## 鸣谢
 
-This style guide was inspired in part by:
+这个风格指南的灵感部分来自于：
 
 * [Fishtown Analytics' dbt Style Guide](https://github.com/fishtown-analytics/corp/blob/master/dbt_coding_conventions.md#sql-style-guide)
 * [KickStarter's SQL Style Guide](https://gist.github.com/fredbenenson/7bb92718e19138c20591)
 * [GitLab's SQL Style Guide](https://about.gitlab.com/handbook/business-ops/data-team/sql-style-guide/)
 
-Hat-tip to Peter Butler, Dan Wyman, Simon Ouderkirk, Alex Cano, Adam Stone, Brian Kim, and Claire Carroll for providing feedback on this guide.
+感谢 Peter Butler, Dan Wyman, Simon Ouderkirk, Alex Cano, Adam Stone, Brian Kim, and Claire Carroll 提供对本指南的反馈。.
