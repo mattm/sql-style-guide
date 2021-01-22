@@ -1,5 +1,5 @@
 
-# Mazur's SQL Style Guide
+# Mazur's SQL Style Guide [中文版](https://github.com/huangxinping/sql-style-guide/blob/zh-cn/README.md)
 
 Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a data analyst who has worked at several startups to help them use data to grow their businesses. This guide is an attempt to document my preferences for formatting SQL in the hope that it may be of some use to others. If you or your team do not already have a SQL style guide, this may serve as a good starting point which you can adopt and update based on your preferences. 
 
