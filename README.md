@@ -185,14 +185,22 @@ from users
 When there's only one where condition, leave it on the same line as `where`:
 
 ```sql
+-- Good
 select email
 from users
 where id = 1234
+
+-- Bad
+select email
+from users
+where
+    id = 1234
 ```
 
 When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
 
 ```sql
+-- Good
 select
     id,
     email
@@ -200,6 +208,14 @@ from users
 where 
     created_at >= '2019-03-01' and 
     vertical = 'work'
+    
+-- Bad
+select
+    id,
+    email
+from users
+where created_at >= '2019-03-01'
+    and vertical = 'work'
 ```
 
 ### Avoid spaces inside of parenthesis
