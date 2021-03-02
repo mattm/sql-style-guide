@@ -125,7 +125,9 @@ Some IDEs have the ability to automatically format SQL so that the spaces after 
 
 ```sql
 -- Good
-select id, email
+select 
+    id,
+    email
 from users
 where email like '%@gmail.com'
 
@@ -191,7 +193,9 @@ where id = 1234
 When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
 
 ```sql
-select id, email
+select
+    id,
+    email
 from users
 where 
     created_at >= '2019-03-01' and 
