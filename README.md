@@ -672,7 +672,7 @@ with d1 as (
 
 ### Window functions
 
-You can leave it all on its own line or break it up into multiple depending on its length:
+Leave it all on its own line:
 
 ```sql
 -- Good
@@ -682,7 +682,7 @@ select
     row_number() over (partition by user_id order by date_updated desc) as details_rank
 from billingdaddy.billing_stored_details
 
--- Good
+-- Okay
 select
     user_id,
     name,
