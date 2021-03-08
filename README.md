@@ -43,7 +43,7 @@ combined_interest as (
 
 ),
 
-final as (
+first_interest as (
 
     select 
         email,
@@ -53,7 +53,7 @@ final as (
 
 )
 
-select * from final
+select * from first_interest
 ```
 ## Guidelines
 
@@ -622,7 +622,7 @@ Avoid subqueries; CTEs will make your queries easier to read and reason about.
 
 When using CTEs, pad the query with new lines. 
 
-If you use any CTEs, always have a CTE named `final` and `select * from final` at the end. That way you can quickly inspect the output of other CTEs used in the query to debug the results.
+If you use any CTEs, always `select *` from the last CTE at the end. That way you can quickly inspect the output of other CTEs used in the query to debug the results.
 
 Closing CTE parentheses should use the same indentation level as `with` and the CTE names.
 
@@ -638,7 +638,7 @@ with ordered_details as (
 
 ),
 
-final as (
+first_updates as (
 
     select user_id, name
     from ordered_details
@@ -646,7 +646,7 @@ final as (
 
 )
 
-select * from final
+select * from first_updates
 
 -- Bad
 select user_id, name
