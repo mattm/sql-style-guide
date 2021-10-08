@@ -20,7 +20,8 @@ with hubspot_interest as (
         email,
         timestamp_millis(property_beacon_interest) as expressed_interest_at
     from hubspot.contact
-    where property_beacon_interest is not null
+    where 
+        property_beacon_interest is not null
 
 ), 
 
@@ -31,7 +32,8 @@ support_interest as (
         conversation.created_at as expressed_interest_at
     from helpscout.conversation
     inner join helpscout.conversation_tag on conversation.id = conversation_tag.conversation_id
-    where conversation_tag.tag = 'beacon-interest'
+    where 
+        conversation_tag.tag = 'beacon-interest'
 
 ), 
 
@@ -72,51 +74,82 @@ SELECT * FROM users
 Select * From users
 ```
 
-### Single line vs multiple line queries
+### Put each selected column on its own line
 
-The only time you should place all of your SQL on a single line is when you're selecting one thing and there's no additional complexity in the query:
+When selecting columns, always put each column name on its own line after the `select` keyword. This makes it easier to iterate on the query as you add more columns.
 
 ```sql
 -- Good
-select * from users
+select 
+    id
+from users 
 
 -- Good
-select id from users
+select 
+    id,
+    email
+from users 
 
--- Good
-select count(*) from users
+-- Bad
+select id
+from users 
+
+-- Bad
+select id, email
+from users 
 ```
 
-Once you start adding more columns or more complexity, the query becomes easier to read if it's spread out on multiple lines:
+## Selecting *
+
+When selecting `*` it's fine to include the `*` next to the `select` and also fine to include the `from` on the same line, assuming no additional complexity like where conditions:
 
 ```sql
 -- Good
-select
-    id,
-    email,
-    created_at
+select * from users 
+
+-- Good too
+select *
 from users
+
+-- Bad
+select * from users where email = 'name@example.com'
+```
+
+## Indenting where conditions
+
+Similarly, conditions should always be spread across multiple lines to maximize readability and make them easier to add to. Operators should be placed at the end of each line:
+
+```sql
+-- Good
+select *
+from users
+where 
+    email = 'example@domain.com'
 
 -- Good
 select *
 from users
+where 
+    email like '%@domain.com' and 
+    created_at >= '2021-10-08'
+
+-- Bad
+select *
+from users
 where email = 'example@domain.com'
 
--- Good
-select
-    user_id,
-    count(*) as total_charges
-from charges
-group by user_id
+-- Bad
+select *
+from users
+where 
+    email like '%@domain.com' and created_at >= '2021-10-08'
 
 -- Bad
-select id, email, created_at
+select *
 from users
-
--- Bad
-select id,
-    email
-from users
+where 
+    email like '%@domain.com' 
+    and created_at >= '2021-10-08'
 ```
 
 ### Left align SQL keywords
@@ -129,7 +162,8 @@ select
     id,
     email
 from users
-where email like '%@gmail.com'
+where 
+    email like '%@gmail.com'
 
 -- Bad
 select id, email
@@ -145,12 +179,14 @@ Some SQL dialects like BigQuery support using double quotes, but for most dialec
 -- Good
 select *
 from users
-where email = 'example@domain.com'
+where 
+    email = 'example@domain.com'
 
 -- Bad
 select *
 from users
-where email = "example@domain.com"
+where 
+    email = "example@domain.com"
 ```
 
 ### Use `!=` over `<>`
@@ -159,9 +195,11 @@ Simply because `!=` reads like "not equal" which is closer to how we'd say it ou
 
 ```sql
 -- Good
-select count(*) as paying_users_count
+select 
+    count(*) as paying_users_count
 from users
-where plan_name != 'free'
+where 
+    plan_name != 'free'
 ```
 
 ### Commas should be at the the end of lines
@@ -180,56 +218,20 @@ select
 from users
 ```
 
-### Indenting where conditions
-
-When there's only one where condition, leave it on the same line as `where`:
-
-```sql
--- Good
-select email
-from users
-where id = 1234
-
--- Bad
-select email
-from users
-where
-    id = 1234
-```
-
-When there are multiple, indent each one one level deeper than the `where`. Put logical operators at the end of the previous condition:
-
-```sql
--- Good
-select
-    id,
-    email
-from users
-where 
-    created_at >= '2019-03-01' and 
-    vertical = 'work'
-    
--- Bad
-select
-    id,
-    email
-from users
-where created_at >= '2019-03-01'
-    and vertical = 'work'
-```
-
 ### Avoid spaces inside of parenthesis
 
 ```sql
 -- Good
 select *
 from users
-where id in (1, 2)
+where 
+    id in (1, 2)
 
 -- Bad
 select *
 from users
-where id in ( 1, 2 )
+where 
+    id in ( 1, 2 )
 ```
 
 ### Break long lists of `in` values into multiple indented lines
@@ -238,24 +240,33 @@ where id in ( 1, 2 )
 -- Good
 select *
 from users
-where email in (
-    'user-1@example.com',
-    'user-2@example.com',
-    'user-3@example.com',
-    'user-4@example.com'
-)
+where 
+    email in (
+        'user-1@example.com',
+        'user-2@example.com',
+        'user-3@example.com',
+        'user-4@example.com'
+    )
 ```
 
 ### Table names should be a plural snake case of the noun
 
 ```sql
 -- Good
-select * from users
-select * from visit_logs
+select * 
+from users
+
+-- Good
+select * 
+from visit_logs
 
 -- Bad
-select * from user
-select * from visitLog
+select * 
+from user
+
+-- Bad
+select * 
+from visitLog
 ```
 
 ### Column names should be snake_case
@@ -474,34 +485,56 @@ inner join charges on users.id = charges.user_id
 
 ```sql
 -- Good
-select count(*) as total_users
+select 
+    count(*) as total_users
 from users
 
 -- Bad
-select count(*)
+select 
+    count(*)
 from users
 
 -- Good
-select timestamp_millis(property_beacon_interest) as expressed_interest_at
+select 
+    timestamp_millis(property_beacon_interest) as expressed_interest_at
 from hubspot.contact
-where property_beacon_interest is not null
+where 
+    property_beacon_interest is not null
 
 -- Bad
-select timestamp_millis(property_beacon_interest)
+select
+    timestamp_millis(property_beacon_interest)
 from hubspot.contact
-where property_beacon_interest is not null
+where
+    property_beacon_interest is not null
 ```
 
 ### Be explicit in boolean conditions
 
 ```sql
 -- Good
-select * from customers where is_cancelled = true
-select * from customers where is_cancelled = false
+select * 
+from customers 
+where 
+    is_cancelled = true
+
+-- Good
+select * 
+from customers 
+where 
+    is_cancelled = false
 
 -- Bad
-select * from customers where is_cancelled
-select * from customers where not is_cancelled
+select * 
+from customers 
+where 
+    is_cancelled
+
+-- Bad
+select * 
+from customers 
+where 
+    not is_cancelled
 ```
 
 ### Use `as` to alias column names
@@ -528,12 +561,16 @@ I prefer grouping by name, but grouping by numbers is [also fine](https://blog.g
 
 ```sql
 -- Good
-select user_id, count(*) as total_charges
+select 
+    user_id, 
+    count(*) as total_charges
 from charges
 group by user_id
 
 -- Good
-select user_id, count(*) as total_charges
+select 
+    user_id, 
+    count(*) as total_charges
 from charges
 group by 1
 
@@ -640,16 +677,21 @@ with ordered_details as (
 
 first_updates as (
 
-    select user_id, name
+    select 
+        user_id, 
+        name
     from ordered_details
-    where details_rank = 1
+    where 
+        details_rank = 1
 
 )
 
 select * from first_updates
 
 -- Bad
-select user_id, name
+select 
+    user_id, 
+    name
 from (
     select
         user_id,
@@ -657,7 +699,8 @@ from (
         row_number() over (partition by user_id order by date_updated desc) as details_rank
     from billingdaddy.billing_stored_details
 ) ranked
-where details_rank = 1
+where 
+    details_rank = 1
 ```
 
 ### Use meaningful CTE names
