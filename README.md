@@ -189,6 +189,8 @@ where
     email = "example@domain.com"
 ```
 
+If you do prefer double quotes, just make sure to be consistent and not switch between single and double quotes.
+
 ### Use `!=` over `<>`
 
 Simply because `!=` reads like "not equal" which is closer to how we'd say it out loud.
