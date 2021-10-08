@@ -189,7 +189,7 @@ where
     email = "example@domain.com"
 ```
 
-If you do prefer double quotes, just make sure to be consistent and not switch between single and double quotes.
+If your SQL dialect supports double quoted strings and you prefer them, just make sure to be consistent and not switch between single and double quotes.
 
 ### Use `!=` over `<>`
 
