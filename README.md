@@ -76,7 +76,7 @@ Select * From users
 
 ### Put each selected column on its own line
 
-When selecting columns, always put each column name on its own line after the `select` keyword. This makes it easier to iterate on the query as you add more columns.
+When selecting columns, always put each column name on its own line and never on the same line as `select`. For multiple columns, it's easier to read when each column is on its own line. And for single columns, it's easier to add additional columns without any reformatting (which you would have to do if the single column name was on the same line as the `select`).
 
 ```sql
 -- Good
