@@ -99,9 +99,9 @@ select id, email
 from users 
 ```
 
-## Selecting *
+## select *
 
-When selecting `*` it's fine to include the `*` next to the `select` and also fine to include the `from` on the same line, assuming no additional complexity like where conditions:
+When selecting `*` it's fine to include the `*` next to the `select` and also fine to include the `from` on the same line, assuming no additional complexity like `where` conditions:
 
 ```sql
 -- Good
