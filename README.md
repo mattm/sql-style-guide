@@ -220,6 +220,8 @@ select
 from users
 ```
 
+While the commas-first style does have some practical advantages (it's easier to spot missing commas and results in cleaner diffs), I'm just not a huge fan of how they look so prefer commas-last.
+
 ### Avoid spaces inside of parenthesis
 
 ```sql
