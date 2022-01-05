@@ -9,6 +9,8 @@ If you're interested in this topic, you may also enjoy my [LookML Style Guide](h
 
 Simplified Chinese version here: [中文版](https://github.com/huangxinping/sql-style-guide/blob/zh-cn/README.md)
 
+**If you are looking for a remote data role at a fantastic company [Help Scout](https://www.helpscout.com/) is currently hiring a [Senior Product Analyst](https://jobs.lever.co/helpscout/b4d453c0-dfee-46e4-85e8-b711d2f0cf37).**
+
 ## Example
 
 Here's a non-trivial query to give you an idea of what this style guide looks like in the practice:
