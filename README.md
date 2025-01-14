@@ -5,7 +5,9 @@ Howdy! I'm [Matt Mazur](https://mattmazur.com/) and I'm a data analyst who has w
 
 Also, I'm a strong believer in having [Strong Opinions, Weakly Held](https://medium.com/@ameet/strong-opinions-weakly-held-a-framework-for-thinking-6530d417e364) so if you disagree with any of this, [drop me a note](https://mattmazur.com/contact/), I'd love to discuss it.
 
-If you're interested in this topic, you may also enjoy my [LookML Style Guide](https://github.com/mattm/lookml-style-guide) or my [blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
+You may also enjoy my [LookML Style Guide](https://github.com/mattm/lookml-style-guide) or my [blog](https://mattmazur.com/category/analytics/) where I write about analytics and data analysis.
+
+Also, if you're interested in continuing to level up your technical skills, **check out [Emergent Mind](https://www.emergentmind.com/?utm_source=sqlstyle)**, an AI research asssistant I'm working on helps you discover and learn about cutting-edge computer science research.
 
 Simplified Chinese version here: [中文版](https://github.com/huangxinping/sql-style-guide/blob/zh-cn/README.md)
 
